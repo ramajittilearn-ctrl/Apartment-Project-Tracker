@@ -23,27 +23,27 @@
     <header class="hero">
       <h1>Project Milestone Tracker</h1>
       <p>โครงการก่อสร้างหอพัก คสล. 3 ชั้น 15 ห้อง · คูคต ลำลูกกา ปทุมธานี</p>
-      <span class="stamp">สถานะ ณ 6 กันยายน 2569 · ลงนามและชำระงวด 1 แล้ว</span>
+      <span class="stamp">สถานะ ณ 7 ตุลาคม 2569 · ชำระงวด 1 และ 1.1 แล้ว</span>
     </header>
 
     <section class="top-grid" aria-label="สรุปโครงการ">
-      <article class="card amber"><div class="label">สถานะปัจจุบัน</div><div class="value">รอใบอนุญาตก่อสร้าง</div><div class="statusline"><span class="badge paid">งวด 1 จ่ายแล้ว</span><span class="badge wait">งวด 1.1 รอเอกสาร</span></div></article>
+      <article class="card amber"><div class="label">สถานะปัจจุบัน</div><div class="value">พร้อมเริ่มงวด 2 · ตอกเสาเข็ม</div><div class="statusline"><span class="badge paid">งวด 1 จ่ายแล้ว</span><span class="badge paid">งวด 1.1 จ่ายแล้ว</span></div></article>
       <article class="card"><div class="label">มูลค่าสัญญา</div><div class="value">3,950,000 บาท</div></article>
-      <article class="card"><div class="label">จ่ายแล้ว</div><div class="value" id="paidValue">197,500 บาท</div><div class="hint" id="paidPercent">5% ของสัญญา</div></article>
-      <article class="card"><div class="label">Milestone ปิดแล้ว</div><div class="value" id="doneValue">1 / 18</div><div class="hint">กดบันทึกในแต่ละงวดได้</div></article>
+      <article class="card"><div class="label">จ่ายแล้ว</div><div class="value" id="paidValue">395,000 บาท</div><div class="hint" id="paidPercent">10% ของสัญญา</div></article>
+      <article class="card"><div class="label">Milestone ปิดแล้ว</div><div class="value" id="doneValue">2 / 18</div><div class="hint">กดบันทึกในแต่ละงวดได้</div></article>
     </section>
 
     <section class="section card">
       <h2>ความคืบหน้า Milestone</h2>
       <div class="progress-shell" aria-label="ความคืบหน้าตามมูลค่างวด"><div class="progress" id="progressBar"></div></div>
-      <div class="progress-info"><span id="progressLabel">จ่ายแล้ว 197,500 บาท</span><span id="progressPercent">5% ของมูลค่าสัญญา</span></div>
+      <div class="progress-info"><span id="progressLabel">จ่ายแล้ว 395,000 บาท</span><span id="progressPercent">10% ของมูลค่าสัญญา</span></div>
       <p class="source">การติ๊ก “ตรวจรับครบ” จะคำนวณยอดปิดงวดและความคืบหน้าตามมูลค่างวดใหม่อัตโนมัติ ข้อมูลบันทึกอยู่ในเบราว์เซอร์เครื่องนี้</p>
     </section>
 
     <section class="section">
       <h2>ตารางงวดงานละเอียดตามสัญญา</h2>
       <p class="section-intro">ตรวจรับตามรายการในงวดก่อนเปลี่ยนสถานะเป็น “ตรวจรับครบ” และแนบวันที่/บันทึกหน้างานไว้ในช่องของแต่ละงวด</p>
-      <div class="tools"><p>งวดที่ 1 ถูกตั้งเป็น “ตรวจรับครบ/จ่ายแล้ว” ตามข้อมูลที่ยืนยันล่าสุด</p><button class="button" type="button" id="resetButton">รีเซ็ตข้อมูลติดตามในหน้านี้</button></div>
+      <div class="tools"><p>งวดที่ 1 และ 1.1 ถูกตั้งเป็น “ตรวจรับครบ/จ่ายแล้ว” ตามข้อมูลที่ยืนยันล่าสุด</p><button class="button" type="button" id="resetButton">รีเซ็ตข้อมูลติดตามในหน้านี้</button></div>
       <div id="milestoneList"></div>
     </section>
 
@@ -52,14 +52,14 @@
       <div class="tablewrap"><table><thead><tr><th>งวด</th><th>สัดส่วน</th><th class="right">จำนวนเงิน (บาท)</th><th>เงื่อนไขปิดงวดโดยสรุป</th></tr></thead><tbody id="paymentTable"></tbody><tfoot><tr><th>รวม</th><th>100%</th><th class="right">3,950,000</th><th>18 milestone รวมงวด 1.1</th></tr></tfoot></table></div>
     </section>
 
-    <section class="section alert"><p><strong>จุดติดตามถัดไป:</strong> รอใบอนุญาตก่อสร้าง/หนังสืออนุญาตเริ่มงาน แล้วบันทึกเลขที่เอกสารและวันที่ในงวด 1.1 ก่อนจ่ายเพิ่ม 197,500 บาท จากนั้นงวด 2 จึงเข้าสู่การตีผัง วางหมุด ขนและตอกเสาเข็มครบตามรายการ</p></section>
+    <section class="section alert"><p><strong>จุดติดตามถัดไป:</strong> งวด 1 และ 1.1 ชำระแล้ว — เข้าสู่งวด 2: ตีผัง วางหมุด ขนและตอกเสาเข็มครบตามรายการ</p></section>
     <p class="foot">อ้างอิง: สัญญาว่าจ้างก่อสร้างหอพัก 3 ชั้น - คุณต๊ะ Rev.01.pdf และ งวดงาน คุณต๊ะ Rev.01.pdf · รายการนี้เป็นเครื่องมือบันทึกติดตาม ไม่แทนการตรวจรับโดยวิศวกร/ผู้ควบคุมงาน</p>
   </main>
 
   <script>
     const milestones = [
       {id:'1',phase:'1. ก่อนเริ่มงาน',pct:5,amount:197500,status:'paid',title:'ทำสัญญาว่าจ้าง / ออกแบบ เขียนแบบ เพื่อขออนุญาตก่อสร้าง',items:['ตกลงเซ็นสัญญาว่าจ้างก่อสร้างอาคาร','ออกแบบและเขียนแบบเพื่อขออนุญาตก่อสร้าง']},
-      {id:'1.1',phase:'1. ก่อนเริ่มงาน',pct:5,amount:197500,status:'waiting',title:'ใบอนุญาตก่อสร้าง / อนุญาตให้เริ่มงาน',items:['ได้รับใบอนุญาตก่อสร้าง (อ.1) เรียบร้อยแล้ว','หรือเทศบาลอนุญาตให้เริ่มทำงานได้ โดยไม่ต้องรอใบอนุญาตก่อสร้าง (อ.1)']},
+      {id:'1.1',phase:'1. ก่อนเริ่มงาน',pct:5,amount:197500,status:'paid',title:'ใบอนุญาตก่อสร้าง / อนุญาตให้เริ่มงาน',items:['ได้รับใบอนุญาตก่อสร้าง (อ.1) เรียบร้อยแล้ว','หรือเทศบาลอนุญาตให้เริ่มทำงานได้ โดยไม่ต้องรอใบอนุญาตก่อสร้าง (อ.1)']},
       {id:'2',phase:'2. ฐานรากและโครงสร้าง',pct:5,amount:197500,title:'เตรียมและตอกเสาเข็ม',items:['ช่างเข้าหน้างาน','ตีผัง วางหมุด','เสาเข็มเข้าหน้างาน พร้อมตอกแล้วเสร็จ']},
       {id:'3',phase:'2. ฐานรากและโครงสร้าง',pct:6,amount:237000,title:'ฟุตติ้ง ตอม่อ และระบบใต้ดิน',items:['งานตัดเสาเข็ม ฟุตติ้ง ตอม่อ แล้วเสร็จ 100%','วางถังบำบัดน้ำเสีย และวางท่อระบายน้ำด้านหลังแล้วเสร็จ']},
       {id:'4',phase:'2. ฐานรากและโครงสร้าง',pct:6,amount:237000,title:'คานคอดินและพื้นชั้น 1',items:['งานคานคอดิน วางแผ่นพื้นสำเร็จรูป','เทคอนกรีตทับหน้าพื้นชั้น 1 แล้วเสร็จ 100%']},
@@ -77,8 +77,11 @@
       {id:'16',phase:'4. กระเบื้อง ประตู สุขภัณฑ์ และสี',pct:8,amount:316000,title:'งานตกแต่งและสุขภัณฑ์ระยะท้าย',items:['ปูกระเบื้องบันไดแล้วเสร็จ 85%','ปูกระเบื้องห้องน้ำชั้น 3 แล้วเสร็จ 85%','ติดตั้งประตู PVC ทั้งหมดแล้วเสร็จ 85%','ปูกระเบื้องทางเดินทั้งหมดแล้วเสร็จ 85%','ติดตั้งสุขภัณฑ์ชั้น 2–3 แล้วเสร็จ 85%','ทาสีจริงภายในรอบแรกแล้วเสร็จ 85%','ทาสีจริงภายนอกรอบแรกแล้วเสร็จ 50%']},
       {id:'17',phase:'5. ส่งมอบและเก็บงาน',pct:5,amount:197500,title:'ส่งมอบอาคารครบ 100%',items:['ติดตั้งดวงโคม ตู้มิเตอร์ไฟ ตู้คอนซูมเมอร์ ปลั๊ก สวิตช์ทั้งหมดแล้วเสร็จ 100%','ติดตั้งประตู หน้าต่างอลูมิเนียมทั้งหมดแล้วเสร็จ 100%','ทาสีจริงแล้วเสร็จทั้งหมด 100%','งานระบบไฟฟ้าทั้งหมดแล้วเสร็จ 100%','ติดตั้งถังเก็บน้ำ ปั๊ม เดินสายเมนประปา และติดตั้งถังบำบัดแล้วเสร็จ','เก็บรายละเอียดและงานส่วนที่เหลือทั้งหมดแล้วเสร็จ 100%']}
     ];
-    const storageKey = 'dorm-milestone-tracker-v1';
-    const defaults = { '1': {done:true,date:'2026-09-06',note:'ชำระงวด 1 แล้ว'} };
+    const storageKey = 'dorm-milestone-tracker-v2';
+    const defaults = {
+      '1': {done:true,date:'2026-09-06',note:'ชำระงวด 1 แล้ว'},
+      '1.1': {done:true,date:'2026-10-07',note:'ชำระงวด 1.1 แล้ว'}
+    };
     function load(){ try{return {...defaults,...JSON.parse(localStorage.getItem(storageKey)||'{}')};}catch{return {...defaults};} }
     let records = load();
     const money = n => new Intl.NumberFormat('th-TH').format(n);
