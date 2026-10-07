@@ -37,7 +37,7 @@
       <h2>ความคืบหน้า Milestone</h2>
       <div class="progress-shell" aria-label="ความคืบหน้าตามมูลค่างวด"><div class="progress" id="progressBar"></div></div>
       <div class="progress-info"><span id="progressLabel">จ่ายแล้ว 395,000 บาท</span><span id="progressPercent">10% ของมูลค่าสัญญา</span></div>
-      <p class="source">ติ๊ก “ตรวจรับครบ” แล้วกดปุ่ม “บันทึกการเปลี่ยนแปลง” เพื่อเก็บข้อมูลในเบราว์เซอร์เครื่องนี้ ยอดและความคืบหน้าจะอัปเดตตามมูลค่างวด</p>
+      <p class="source">ติ๊ก “ตรวจรับครบ” แล้วกดปุ่ม “บันทึกการเปลี่ยนแปลง” เพื่อบันทึกลงเซิร์ฟเวอร์ (ใช้ได้ทุกเครื่อง) ยอดและความคืบหน้าจะอัปเดตตามมูลค่างวด</p>
     </section>
 
     <section class="section">
@@ -81,14 +81,13 @@
       {id:'16',phase:'4. กระเบื้อง ประตู สุขภัณฑ์ และสี',pct:8,amount:316000,title:'งานตกแต่งและสุขภัณฑ์ระยะท้าย',items:['ปูกระเบื้องบันไดแล้วเสร็จ 85%','ปูกระเบื้องห้องน้ำชั้น 3 แล้วเสร็จ 85%','ติดตั้งประตู PVC ทั้งหมดแล้วเสร็จ 85%','ปูกระเบื้องทางเดินทั้งหมดแล้วเสร็จ 85%','ติดตั้งสุขภัณฑ์ชั้น 2–3 แล้วเสร็จ 85%','ทาสีจริงภายในรอบแรกแล้วเสร็จ 85%','ทาสีจริงภายนอกรอบแรกแล้วเสร็จ 50%']},
       {id:'17',phase:'5. ส่งมอบและเก็บงาน',pct:5,amount:197500,title:'ส่งมอบอาคารครบ 100%',items:['ติดตั้งดวงโคม ตู้มิเตอร์ไฟ ตู้คอนซูมเมอร์ ปลั๊ก สวิตช์ทั้งหมดแล้วเสร็จ 100%','ติดตั้งประตู หน้าต่างอลูมิเนียมทั้งหมดแล้วเสร็จ 100%','ทาสีจริงแล้วเสร็จทั้งหมด 100%','งานระบบไฟฟ้าทั้งหมดแล้วเสร็จ 100%','ติดตั้งถังเก็บน้ำ ปั๊ม เดินสายเมนประปา และติดตั้งถังบำบัดแล้วเสร็จ','เก็บรายละเอียดและงานส่วนที่เหลือทั้งหมดแล้วเสร็จ 100%']}
     ];
-    const storageKey = 'dorm-milestone-tracker-v4';
+    const API = '/api/milestones';
     const defaults = {
       '1': {done:true,date:'2026-09-06',note:'ชำระงวด 1 แล้ว'},
       '1.1': {done:true,date:'2026-10-06',note:'ชำระงวด 1.1 แล้ว'}
     };
     const THAI_MONTHS = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-    function load(){ try{return {...defaults,...JSON.parse(localStorage.getItem(storageKey)||'{}')};}catch{return {...defaults};} }
-    let records = load();
+    let records = {...defaults};
     const money = n => new Intl.NumberFormat('th-TH').format(n);
     function phaseTotals(items){return items.reduce((s,x)=>s+x.amount,0)}
     function escapeHtml(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
@@ -96,6 +95,24 @@
       const d = iso ? new Date(iso + 'T12:00:00') : new Date();
       if (Number.isNaN(d.getTime())) return formatThaiDate(null);
       return `${d.getDate()} ${THAI_MONTHS[d.getMonth()]} ${d.getFullYear() + 543}`;
+    }
+    function mergeRecords(incoming){
+      const base = {...defaults};
+      if (!incoming || typeof incoming !== 'object') return base;
+      for (const [id, rec] of Object.entries(incoming)) {
+        if (!rec || typeof rec !== 'object') continue;
+        base[id] = {
+          done: !!rec.done,
+          date: typeof rec.date === 'string' ? rec.date : (base[id]?.date || ''),
+          note: typeof rec.note === 'string' ? rec.note : (base[id]?.note || '')
+        };
+      }
+      return base;
+    }
+    function setSaveStatus(text, kind){
+      const st = document.getElementById('saveStatus');
+      st.textContent = text;
+      st.style.color = kind === 'error' ? 'var(--red)' : kind === 'warn' ? 'var(--amber)' : 'var(--green)';
     }
     function completedList(){ return milestones.filter(m => records[m.id]?.done); }
     function nextOpen(){ return milestones.find(m => !records[m.id]?.done) || null; }
@@ -172,12 +189,27 @@
       records[id][field] = field === 'done' ? e.target.checked : e.target.value;
       if (field === 'done') applyDoneClass(id);
       updateTotals();
-      const st = document.getElementById('saveStatus');
-      st.textContent = 'ยังไม่ได้บันทึก';
-      st.style.color = 'var(--amber)';
+      setSaveStatus('ยังไม่ได้บันทึก', 'warn');
     }
-    function persist(){
-      localStorage.setItem(storageKey, JSON.stringify(records));
+    async function saveToServer(){
+      const res = await fetch(API, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ records })
+      });
+      if (!res.ok) throw new Error('save_failed_' + res.status);
+      const data = await res.json();
+      if (data.records) records = mergeRecords(data.records);
+      return data;
+    }
+    async function loadFromServer(){
+      setSaveStatus('กำลังโหลด…', 'warn');
+      const res = await fetch(API);
+      if (!res.ok) throw new Error('load_failed_' + res.status);
+      const data = await res.json();
+      records = mergeRecords(data.records);
+      render();
+      setSaveStatus('', 'ok');
     }
     function render(){
       const groups = [...new Set(milestones.map(x=>x.phase))];
@@ -194,23 +226,44 @@
       let badge = m.status==='paid' ? '<span class="badge paid">จ่ายแล้ว</span>' : m.status==='waiting' ? '<span class="badge wait">รอใบอนุญาต</span>' : '<span class="badge pending">ยังไม่เริ่ม</span>';
       return `<article class="milestone ${done?'done':''}"><div class="number">งวด ${m.id}</div><div><p class="work">${m.title}</p><div class="statusline">${badge}</div><ul class="details">${m.items.map(i=>`<li>${i}</li>`).join('')}</ul></div><div class="payment"><strong>${money(m.amount)}</strong><span>${m.pct}% ของสัญญา</span></div><div class="track"><label class="state"><input data-id="${m.id}" data-field="done" type="checkbox" ${done?'checked':''}> ตรวจรับครบ / ปิดงวด</label><label>วันที่ตรวจรับ<input data-id="${m.id}" data-field="date" type="date" value="${r.date||''}"></label><label>บันทึกหน้างาน<input data-id="${m.id}" data-field="note" type="text" value="${escapeHtml(r.note||'')}" placeholder="เช่น เลขใบอนุญาต / ผู้ตรวจรับ"></label></div></article>`;
     }
-    document.getElementById('saveButton').addEventListener('click', () => {
-      persist();
-      updateTotals();
-      const st = document.getElementById('saveStatus');
-      st.textContent = 'บันทึกแล้ว';
-      st.style.color = 'var(--green)';
+    document.getElementById('saveButton').addEventListener('click', async () => {
+      const btn = document.getElementById('saveButton');
+      btn.disabled = true;
+      setSaveStatus('กำลังบันทึก…', 'warn');
+      try {
+        await saveToServer();
+        updateTotals();
+        setSaveStatus('บันทึกแล้ว', 'ok');
+      } catch (err) {
+        console.error(err);
+        setSaveStatus('บันทึกไม่สำเร็จ — ลองอีกครั้ง', 'error');
+      } finally {
+        btn.disabled = false;
+      }
     });
-    document.getElementById('resetButton').addEventListener('click', () => {
-      if (!confirm('รีเซ็ตเฉพาะข้อมูลติดตามที่บันทึกในเบราว์เซอร์นี้ใช่หรือไม่?')) return;
+    document.getElementById('resetButton').addEventListener('click', async () => {
+      if (!confirm('รีเซ็ตข้อมูลติดตามเป็นค่าเริ่มต้น (งวด 1 และ 1.1 จ่ายแล้ว) และบันทึกลงเซิร์ฟเวอร์ใช่หรือไม่?')) return;
       records = {...defaults};
-      persist();
-      render();
-      const st = document.getElementById('saveStatus');
-      st.textContent = 'รีเซ็ตและบันทึกแล้ว';
-      st.style.color = 'var(--green)';
+      const btn = document.getElementById('resetButton');
+      btn.disabled = true;
+      setSaveStatus('กำลังรีเซ็ตและบันทึก…', 'warn');
+      try {
+        await saveToServer();
+        render();
+        setSaveStatus('รีเซ็ตและบันทึกแล้ว', 'ok');
+      } catch (err) {
+        console.error(err);
+        setSaveStatus('รีเซ็ตแล้วในหน้านี้ แต่บันทึกเซิร์ฟเวอร์ไม่สำเร็จ', 'error');
+        render();
+      } finally {
+        btn.disabled = false;
+      }
     });
     render();
+    loadFromServer().catch(err => {
+      console.error(err);
+      setSaveStatus('โหลดจากเซิร์ฟเวอร์ไม่สำเร็จ — แสดงค่าเริ่มต้น', 'error');
+    });
   </script>
 </body>
 </html>

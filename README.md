@@ -6,13 +6,19 @@ Private construction **project milestone / progress tracker** for Taky (หอ�
 
 ## Live UI
 
-The live UI is Taky’s own `report.html` — a self-contained Thai **Project Milestone Tracker** with contract milestones, payment schedule, and browser `localStorage`. Served as-is (no PIN gate on the trycloudflare preview).
+The live UI is Taky’s own `report.html` — a self-contained Thai **Project Milestone Tracker** with contract milestones, payment schedule, with **server-side** milestone persistence. Served as-is (no PIN gate on the trycloudflare preview).
 
 - Port: **8766**
 - Routes:
   - `GET /` → `report.html`
   - `GET /report.html` → same page
   - `GET /api/health` → `{"ok":true,"service":"apartment-progress-tracker","port":8766}`
+  - `GET /api/milestones` → `{ updatedAt, records }` (creates defaults if missing)
+  - `PUT /api/milestones` → body `{ records: { "<id>": { done?, date?, note? }, ... } }` → persists to `data/milestones.json`
+
+## Milestone data
+
+Saved permanently on disk at `data/milestones.json`. The Save button in the UI calls `PUT /api/milestones`, so edits survive refresh and work across devices. Defaults: งวด `1` paid 2026-09-06; งวด `1.1` paid 2026-10-06.
 
 ## Run locally
 
@@ -39,7 +45,8 @@ Leave both running. The trycloudflare hostname is ephemeral (new URL each tunnel
 | Path | Role |
 |------|------|
 | `report.html` | Taky’s milestone tracker (source of truth for UI) |
-| `server.js` | Minimal Express: health + serve report |
+| `server.js` | Express: health, milestone API, serve report |
+| `data/milestones.json` | Persisted milestone tracking records |
 | `package.json` | Node deps |
 
 Old dark dashboard / PIN UI under `public/` / `lib/` / `views/` is unused and not served at `/`.
