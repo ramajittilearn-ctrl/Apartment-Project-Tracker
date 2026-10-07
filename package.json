@@ -1,7 +1,7 @@
 {
   "name": "apartment-project-tracker",
   "version": "1.0.0",
-  "description": "Construction project progress tracker for Taky (private)",
+  "description": "Construction project milestone tracker (Taky report.html format) \u2014 private",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -16,9 +16,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "cookie-parser": "^1.4.7",
-    "express": "^5.2.1",
-    "uuid": "^14.0.2"
+    "express": "^5.2.1"
   },
   "engines": {
     "node": ">=18"
