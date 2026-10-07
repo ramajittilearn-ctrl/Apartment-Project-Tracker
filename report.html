@@ -12,10 +12,10 @@
     .progress-shell{background:#e7edf3;border-radius:999px;overflow:hidden;height:13px}.progress{height:100%;width:0;background:linear-gradient(90deg,#23885c,#52b884);transition:width .25s ease}.progress-info{display:flex;justify-content:space-between;gap:12px;margin:8px 0 0;font-size:.9rem;color:var(--muted)}
     .phase{margin-top:20px}.phase-header{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding-bottom:8px;border-bottom:2px solid var(--line)}.phase-header h3{margin:0;font-size:1.1rem}.phase-sum{color:var(--muted);font-size:.9rem;white-space:nowrap}.milestone{display:grid;grid-template-columns:74px 1fr 125px 156px;gap:14px;align-items:start;padding:17px 5px;border-bottom:1px solid var(--line)}.milestone:last-child{border-bottom:0}.number{font-weight:700;color:var(--blue2);font-size:1.05rem}.work{font-weight:650;margin:0 0 4px}.details{margin:0;padding-left:20px;font-size:.93rem}.details li{margin:2px 0}.payment{text-align:right;font-variant-numeric:tabular-nums}.payment strong{font-size:1.05rem;display:block}.payment span{font-size:.85rem;color:var(--muted)}
     .track{display:grid;gap:8px}.state{display:flex;align-items:center;gap:7px;font-size:.9rem;font-weight:600}.state input{width:17px;height:17px;accent-color:var(--green);margin:0}.track label{font-size:.8rem;color:var(--muted)}.track input[type="date"],.track input[type="text"]{width:100%;border:1px solid var(--line);border-radius:7px;padding:6px 7px;color:var(--ink);font:inherit;font-size:.83rem;background:#fff}.track input[type="text"]{min-width:0}.done .number,.done .work{color:var(--green)}.done{background:linear-gradient(90deg,var(--greenbg),transparent 66%)}
-    .statusline{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.badge{font-size:.8rem;padding:2px 8px;border-radius:999px;background:var(--blue);color:#245e8e}.badge.paid{background:var(--greenbg);color:#176645}.badge.wait{background:var(--amberbg);color:#875a0d}.badge.pending{background:#edf1f5;color:#566579}.tools{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:15px 0}.tools p{margin:0;color:var(--muted);font-size:.88rem}.button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 11px;font:inherit;color:var(--ink);cursor:pointer}.button:hover{background:#f5f8fb}.alert{border-left:5px solid #dea02d;background:var(--amberbg);border-radius:10px;padding:14px 16px}.alert p{margin:0}.alert strong{color:#855a0a}
+    .statusline{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.badge{font-size:.8rem;padding:2px 8px;border-radius:999px;background:var(--blue);color:#245e8e}.badge.paid{background:var(--greenbg);color:#176645}.badge.wait{background:var(--amberbg);color:#875a0d}.badge.pending{background:#edf1f5;color:#566579}.tools{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:15px 0}.tools p{margin:0;color:var(--muted);font-size:.88rem}.button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 11px;font:inherit;color:var(--ink);cursor:pointer}.button:hover{background:#f5f8fb}.button.primary{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600;padding:9px 18px}.button.primary:hover{background:#1a4a75}.save-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:18px 0 6px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:12px}.save-status{color:var(--green);font-size:.9rem;font-weight:600;min-height:1.2em}.alert{border-left:5px solid #dea02d;background:var(--amberbg);border-radius:10px;padding:14px 16px}.alert p{margin:0}.alert strong{color:#855a0a}
     .tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{color:#4b5e73;background:#f7f9fc}.right{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.foot{color:var(--muted);font-size:.86rem;margin-top:24px}.source{font-size:.87rem;color:var(--muted);margin-top:10px}
     @media(max-width:860px){.top-grid{grid-template-columns:repeat(2,1fr)}.top-grid .card:first-child{grid-column:span 2}.milestone{grid-template-columns:62px 1fr 125px}.track{grid-column:2 / -1;grid-template-columns:1fr 130px 1fr;align-items:end}.state{grid-column:1 / -1}}@media(max-width:570px){.wrap{padding:15px 10px 38px}.hero{padding:23px 19px;border-radius:14px}.top-grid{grid-template-columns:1fr}.top-grid .card:first-child{grid-column:auto}.milestone{grid-template-columns:50px 1fr;gap:10px;padding:15px 1px}.payment{grid-column:2;text-align:left;display:flex;gap:8px;align-items:baseline}.payment strong{display:inline}.track{grid-column:2;grid-template-columns:1fr}.phase-header{align-items:flex-start;flex-direction:column;gap:2px}.progress-info{flex-direction:column;gap:2px}}
-    @media print{body{background:#fff}.wrap{max-width:none;padding:0}.hero{border-radius:0;box-shadow:none}.track,.tools{display:none}.milestone{grid-template-columns:65px 1fr 125px}.statusline{display:none}}
+    @media print{body{background:#fff}.wrap{max-width:none;padding:0}.hero{border-radius:0;box-shadow:none}.track,.tools,.save-bar{display:none}.milestone{grid-template-columns:65px 1fr 125px}.statusline{display:none}}
   </style>
 </head>
 <body>
@@ -23,21 +23,21 @@
     <header class="hero">
       <h1>Project Milestone Tracker</h1>
       <p>โครงการก่อสร้างหอพัก คสล. 3 ชั้น 15 ห้อง · คูคต ลำลูกกา ปทุมธานี</p>
-      <span class="stamp">สถานะ ณ 6 ตุลาคม 2569 · ชำระงวด 1 และ 1.1 แล้ว</span>
+      <span class="stamp" id="heroStamp">สถานะ ณ 6 ตุลาคม 2569 · ชำระงวด 1 และ 1.1 แล้ว</span>
     </header>
 
     <section class="top-grid" aria-label="สรุปโครงการ">
-      <article class="card amber"><div class="label">สถานะปัจจุบัน</div><div class="value">พร้อมเริ่มงวด 2 · ตอกเสาเข็ม</div><div class="statusline"><span class="badge paid">งวด 1 จ่ายแล้ว</span><span class="badge paid">งวด 1.1 จ่ายแล้ว</span></div></article>
+      <article class="card amber"><div class="label">สถานะปัจจุบัน</div><div class="value" id="statusValue">พร้อมเริ่มงวด 2 · ตอกเสาเข็ม</div><div class="statusline" id="statusBadges"><span class="badge paid">งวด 1 จ่ายแล้ว</span><span class="badge paid">งวด 1.1 จ่ายแล้ว</span></div></article>
       <article class="card"><div class="label">มูลค่าสัญญา</div><div class="value">3,950,000 บาท</div></article>
       <article class="card"><div class="label">จ่ายแล้ว</div><div class="value" id="paidValue">395,000 บาท</div><div class="hint" id="paidPercent">10% ของสัญญา</div></article>
-      <article class="card"><div class="label">Milestone ปิดแล้ว</div><div class="value" id="doneValue">2 / 18</div><div class="hint">กดบันทึกในแต่ละงวดได้</div></article>
+      <article class="card"><div class="label">Milestone ปิดแล้ว</div><div class="value" id="doneValue">2 / 18</div><div class="hint">แก้ไขแล้วกดบันทึกด้านล่าง</div></article>
     </section>
 
     <section class="section card">
       <h2>ความคืบหน้า Milestone</h2>
       <div class="progress-shell" aria-label="ความคืบหน้าตามมูลค่างวด"><div class="progress" id="progressBar"></div></div>
       <div class="progress-info"><span id="progressLabel">จ่ายแล้ว 395,000 บาท</span><span id="progressPercent">10% ของมูลค่าสัญญา</span></div>
-      <p class="source">การติ๊ก “ตรวจรับครบ” จะคำนวณยอดปิดงวดและความคืบหน้าตามมูลค่างวดใหม่อัตโนมัติ ข้อมูลบันทึกอยู่ในเบราว์เซอร์เครื่องนี้</p>
+      <p class="source">ติ๊ก “ตรวจรับครบ” แล้วกดปุ่ม “บันทึกการเปลี่ยนแปลง” เพื่อเก็บข้อมูลในเบราว์เซอร์เครื่องนี้ ยอดและความคืบหน้าจะอัปเดตตามมูลค่างวด</p>
     </section>
 
     <section class="section">
@@ -45,6 +45,10 @@
       <p class="section-intro">ตรวจรับตามรายการในงวดก่อนเปลี่ยนสถานะเป็น “ตรวจรับครบ” และแนบวันที่/บันทึกหน้างานไว้ในช่องของแต่ละงวด</p>
       <div class="tools"><p>งวดที่ 1 และ 1.1 ถูกตั้งเป็น “ตรวจรับครบ/จ่ายแล้ว” ตามข้อมูลที่ยืนยันล่าสุด</p><button class="button" type="button" id="resetButton">รีเซ็ตข้อมูลติดตามในหน้านี้</button></div>
       <div id="milestoneList"></div>
+      <div class="save-bar">
+        <button class="button primary" type="button" id="saveButton">บันทึกการเปลี่ยนแปลง</button>
+        <span class="save-status" id="saveStatus" aria-live="polite"></span>
+      </div>
     </section>
 
     <section class="section card">
@@ -52,7 +56,7 @@
       <div class="tablewrap"><table><thead><tr><th>งวด</th><th>สัดส่วน</th><th class="right">จำนวนเงิน (บาท)</th><th>เงื่อนไขปิดงวดโดยสรุป</th></tr></thead><tbody id="paymentTable"></tbody><tfoot><tr><th>รวม</th><th>100%</th><th class="right">3,950,000</th><th>18 milestone รวมงวด 1.1</th></tr></tfoot></table></div>
     </section>
 
-    <section class="section alert"><p><strong>จุดติดตามถัดไป:</strong> งวด 1 และ 1.1 ชำระแล้ว — เข้าสู่งวด 2: ตีผัง วางหมุด ขนและตอกเสาเข็มครบตามรายการ</p></section>
+    <section class="section alert"><p id="nextAlert"><strong>จุดติดตามถัดไป:</strong> งวด 1 และ 1.1 ชำระแล้ว — เข้าสู่งวด 2: ตีผัง วางหมุด ขนและตอกเสาเข็มครบตามรายการ</p></section>
     <p class="foot">อ้างอิง: สัญญาว่าจ้างก่อสร้างหอพัก 3 ชั้น - คุณต๊ะ Rev.01.pdf และ งวดงาน คุณต๊ะ Rev.01.pdf · รายการนี้เป็นเครื่องมือบันทึกติดตาม ไม่แทนการตรวจรับโดยวิศวกร/ผู้ควบคุมงาน</p>
   </main>
 
@@ -77,42 +81,135 @@
       {id:'16',phase:'4. กระเบื้อง ประตู สุขภัณฑ์ และสี',pct:8,amount:316000,title:'งานตกแต่งและสุขภัณฑ์ระยะท้าย',items:['ปูกระเบื้องบันไดแล้วเสร็จ 85%','ปูกระเบื้องห้องน้ำชั้น 3 แล้วเสร็จ 85%','ติดตั้งประตู PVC ทั้งหมดแล้วเสร็จ 85%','ปูกระเบื้องทางเดินทั้งหมดแล้วเสร็จ 85%','ติดตั้งสุขภัณฑ์ชั้น 2–3 แล้วเสร็จ 85%','ทาสีจริงภายในรอบแรกแล้วเสร็จ 85%','ทาสีจริงภายนอกรอบแรกแล้วเสร็จ 50%']},
       {id:'17',phase:'5. ส่งมอบและเก็บงาน',pct:5,amount:197500,title:'ส่งมอบอาคารครบ 100%',items:['ติดตั้งดวงโคม ตู้มิเตอร์ไฟ ตู้คอนซูมเมอร์ ปลั๊ก สวิตช์ทั้งหมดแล้วเสร็จ 100%','ติดตั้งประตู หน้าต่างอลูมิเนียมทั้งหมดแล้วเสร็จ 100%','ทาสีจริงแล้วเสร็จทั้งหมด 100%','งานระบบไฟฟ้าทั้งหมดแล้วเสร็จ 100%','ติดตั้งถังเก็บน้ำ ปั๊ม เดินสายเมนประปา และติดตั้งถังบำบัดแล้วเสร็จ','เก็บรายละเอียดและงานส่วนที่เหลือทั้งหมดแล้วเสร็จ 100%']}
     ];
-    const storageKey = 'dorm-milestone-tracker-v3';
+    const storageKey = 'dorm-milestone-tracker-v4';
     const defaults = {
       '1': {done:true,date:'2026-09-06',note:'ชำระงวด 1 แล้ว'},
       '1.1': {done:true,date:'2026-10-06',note:'ชำระงวด 1.1 แล้ว'}
     };
+    const THAI_MONTHS = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
     function load(){ try{return {...defaults,...JSON.parse(localStorage.getItem(storageKey)||'{}')};}catch{return {...defaults};} }
     let records = load();
     const money = n => new Intl.NumberFormat('th-TH').format(n);
     function phaseTotals(items){return items.reduce((s,x)=>s+x.amount,0)}
+    function escapeHtml(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+    function formatThaiDate(iso){
+      const d = iso ? new Date(iso + 'T12:00:00') : new Date();
+      if (Number.isNaN(d.getTime())) return formatThaiDate(null);
+      return `${d.getDate()} ${THAI_MONTHS[d.getMonth()]} ${d.getFullYear() + 543}`;
+    }
+    function completedList(){ return milestones.filter(m => records[m.id]?.done); }
+    function nextOpen(){ return milestones.find(m => !records[m.id]?.done) || null; }
+    function latestCompletedDate(){
+      const done = completedList();
+      if (!done.length) return null;
+      let best = null;
+      for (const m of done) {
+        const ds = records[m.id]?.date;
+        if (ds && (!best || ds > best)) best = ds;
+      }
+      return best;
+    }
+    function joinThaiIds(ids){
+      if (!ids.length) return '';
+      if (ids.length === 1) return ids[0];
+      if (ids.length === 2) return ids[0] + ' และ ' + ids[1];
+      return ids.slice(0, -1).join(', ') + ' และ ' + ids[ids.length - 1];
+    }
+    function shortTitle(m){
+      if (!m) return '';
+      if (m.id === '2') return 'ตอกเสาเข็ม';
+      const t = m.title || '';
+      return t.length > 28 ? t.slice(0, 28) + '…' : t;
+    }
+    function updateStatusHeader(){
+      const done = completedList();
+      const next = nextOpen();
+      const paidIds = done.map(m => m.id);
+      const dateStr = formatThaiDate(latestCompletedDate());
+      let stampPaid = '';
+      if (paidIds.length) stampPaid = ' · ชำระงวด ' + joinThaiIds(paidIds) + ' แล้ว';
+      else stampPaid = ' · ยังไม่มีการชำระงวด';
+      document.getElementById('heroStamp').textContent = 'สถานะ ณ ' + dateStr + stampPaid;
+
+      const statusEl = document.getElementById('statusValue');
+      const badgesEl = document.getElementById('statusBadges');
+      if (next) {
+        statusEl.textContent = 'พร้อมเริ่มงวด ' + next.id + ' · ' + shortTitle(next);
+      } else {
+        statusEl.textContent = 'ปิดครบทุกงวดแล้ว';
+      }
+      badgesEl.innerHTML = paidIds.map(id => '<span class="badge paid">งวด ' + id + ' จ่ายแล้ว</span>').join('') || '<span class="badge pending">ยังไม่เริ่ม</span>';
+
+      const alertEl = document.getElementById('nextAlert');
+      if (next) {
+        const paidPhrase = paidIds.length ? 'งวด ' + joinThaiIds(paidIds) + ' ชำระแล้ว — เข้าสู่งวด ' + next.id + ': ' : 'เข้าสู่งวด ' + next.id + ': ';
+        const detail = (next.items && next.items.length) ? next.items.join(' ') : next.title;
+        alertEl.innerHTML = '<strong>จุดติดตามถัดไป:</strong> ' + escapeHtml(paidPhrase + detail);
+      } else {
+        alertEl.innerHTML = '<strong>จุดติดตามถัดไป:</strong> ปิดครบทุกงวดตามสัญญาแล้ว';
+      }
+    }
+    function updateTotals(){
+      const completed = completedList(), paid = completed.reduce((s,m)=>s+m.amount,0), pct = paid/3950000*100;
+      document.getElementById('paidValue').textContent = `${money(paid)} บาท`;
+      document.getElementById('paidPercent').textContent = `${pct.toFixed(0)}% ของสัญญา`;
+      document.getElementById('doneValue').textContent = `${completed.length} / ${milestones.length}`;
+      document.getElementById('progressBar').style.width = `${pct}%`;
+      document.getElementById('progressLabel').textContent = `ปิดงวดแล้ว ${money(paid)} บาท`;
+      document.getElementById('progressPercent').textContent = `${pct.toFixed(1)}% ของมูลค่าสัญญา`;
+      updateStatusHeader();
+    }
+    function applyDoneClass(id){
+      const article = document.querySelector(`.milestone [data-id="${id}"][data-field="done"]`)?.closest('.milestone');
+      if (!article) return;
+      const done = !!records[id]?.done;
+      article.classList.toggle('done', done);
+    }
+    function onFieldChange(e){
+      const {id, field} = e.target.dataset;
+      if (!id || !field) return;
+      records[id] ??= {};
+      records[id][field] = field === 'done' ? e.target.checked : e.target.value;
+      if (field === 'done') applyDoneClass(id);
+      updateTotals();
+      const st = document.getElementById('saveStatus');
+      st.textContent = 'ยังไม่ได้บันทึก';
+      st.style.color = 'var(--amber)';
+    }
+    function persist(){
+      localStorage.setItem(storageKey, JSON.stringify(records));
+    }
     function render(){
       const groups = [...new Set(milestones.map(x=>x.phase))];
       document.getElementById('milestoneList').innerHTML = groups.map(phase=>{
-        const list=milestones.filter(x=>x.phase===phase), total=phaseTotals(list);
+        const list = milestones.filter(x=>x.phase===phase), total = phaseTotals(list);
         return `<section class="phase"><div class="phase-header"><h3>${phase}</h3><span class="phase-sum">${money(total)} บาท · ${list.reduce((s,x)=>s+x.pct,0)}%</span></div>${list.map(m=>row(m)).join('')}</section>`;
       }).join('');
       document.getElementById('paymentTable').innerHTML = milestones.map(m=>`<tr><td>${m.id}</td><td>${m.pct}%</td><td class="right">${money(m.amount)}</td><td>${m.title}</td></tr>`).join('');
-      document.querySelectorAll('[data-id]').forEach(el=>el.addEventListener('change',saveFromInput));
+      document.querySelectorAll('[data-id]').forEach(el => el.addEventListener('change', onFieldChange));
       updateTotals();
     }
     function row(m){
-      const r=records[m.id]||{}, done=!!r.done;
-      let badge=m.status==='paid'?'<span class="badge paid">จ่ายแล้ว</span>':m.status==='waiting'?'<span class="badge wait">รอใบอนุญาต</span>':'<span class="badge pending">ยังไม่เริ่ม</span>';
+      const r = records[m.id] || {}, done = !!r.done;
+      let badge = m.status==='paid' ? '<span class="badge paid">จ่ายแล้ว</span>' : m.status==='waiting' ? '<span class="badge wait">รอใบอนุญาต</span>' : '<span class="badge pending">ยังไม่เริ่ม</span>';
       return `<article class="milestone ${done?'done':''}"><div class="number">งวด ${m.id}</div><div><p class="work">${m.title}</p><div class="statusline">${badge}</div><ul class="details">${m.items.map(i=>`<li>${i}</li>`).join('')}</ul></div><div class="payment"><strong>${money(m.amount)}</strong><span>${m.pct}% ของสัญญา</span></div><div class="track"><label class="state"><input data-id="${m.id}" data-field="done" type="checkbox" ${done?'checked':''}> ตรวจรับครบ / ปิดงวด</label><label>วันที่ตรวจรับ<input data-id="${m.id}" data-field="date" type="date" value="${r.date||''}"></label><label>บันทึกหน้างาน<input data-id="${m.id}" data-field="note" type="text" value="${escapeHtml(r.note||'')}" placeholder="เช่น เลขใบอนุญาต / ผู้ตรวจรับ"></label></div></article>`;
     }
-    function escapeHtml(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
-    function saveFromInput(e){const {id,field}=e.target.dataset;records[id]??={};records[id][field]=field==='done'?e.target.checked:e.target.value;localStorage.setItem(storageKey,JSON.stringify(records));render();}
-    function updateTotals(){
-      const completed=milestones.filter(m=>records[m.id]?.done), paid=completed.reduce((s,m)=>s+m.amount,0), pct=paid/3950000*100;
-      document.getElementById('paidValue').textContent=`${money(paid)} บาท`;
-      document.getElementById('paidPercent').textContent=`${pct.toFixed(0)}% ของสัญญา`;
-      document.getElementById('doneValue').textContent=`${completed.length} / ${milestones.length}`;
-      document.getElementById('progressBar').style.width=`${pct}%`;
-      document.getElementById('progressLabel').textContent=`ปิดงวดแล้ว ${money(paid)} บาท`;
-      document.getElementById('progressPercent').textContent=`${pct.toFixed(1)}% ของมูลค่าสัญญา`;
-    }
-    document.getElementById('resetButton').addEventListener('click',()=>{if(confirm('รีเซ็ตเฉพาะข้อมูลติดตามที่บันทึกในเบราว์เซอร์นี้ใช่หรือไม่?')){records={...defaults};localStorage.setItem(storageKey,JSON.stringify(records));render();}});
+    document.getElementById('saveButton').addEventListener('click', () => {
+      persist();
+      updateTotals();
+      const st = document.getElementById('saveStatus');
+      st.textContent = 'บันทึกแล้ว';
+      st.style.color = 'var(--green)';
+    });
+    document.getElementById('resetButton').addEventListener('click', () => {
+      if (!confirm('รีเซ็ตเฉพาะข้อมูลติดตามที่บันทึกในเบราว์เซอร์นี้ใช่หรือไม่?')) return;
+      records = {...defaults};
+      persist();
+      render();
+      const st = document.getElementById('saveStatus');
+      st.textContent = 'รีเซ็ตและบันทึกแล้ว';
+      st.style.color = 'var(--green)';
+    });
     render();
   </script>
 </body>
