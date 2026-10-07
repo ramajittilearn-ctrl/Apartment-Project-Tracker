@@ -1,0 +1,26 @@
+{
+  "name": "apartment-project-tracker",
+  "version": "1.0.0",
+  "description": "Construction project progress tracker for Taky (private)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "construction",
+    "progress",
+    "tracker"
+  ],
+  "author": "Taky / Ramajitti Pasutanavin",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^5.2.1",
+    "uuid": "^14.0.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
