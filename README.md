@@ -6,7 +6,7 @@ Private construction **project milestone / progress tracker** for Taky (หอ�
 
 ## Live UI
 
-The live UI is Taky’s own `report.html` — a self-contained Thai **Project Milestone Tracker** with contract milestones, payment schedule, with **server-side** milestone persistence. Served as-is (no PIN gate on the trycloudflare preview).
+The live UI is Taky’s own `report.html` — a self-contained Thai **Project Milestone Tracker** with contract milestones, payment schedule, with **server-side** milestone persistence. Served as-is (viewing is open; saving needs an edit PIN).
 
 - Port: **8766**
 - Routes:
@@ -50,3 +50,10 @@ Leave both running. The trycloudflare hostname is ephemeral (new URL each tunnel
 | `package.json` | Node deps |
 
 Old dark dashboard / PIN UI under `public/` / `lib/` / `views/` is unused and not served at `/`.
+
+## Edit PIN
+
+Viewing and `GET /api/milestones` are open. `PUT /api/milestones` requires the header `X-Edit-Pin: <PIN>`.
+The server compares SHA-256(PIN) to `TRACKER_PIN_HASH` (hex, from `.env`) in constant time. If the hash is missing, PUT fails closed (503).
+Wrong PINs: 5 per 10 minutes per IP, then 429 (in-memory, cleared on restart). Generate a hash with:
+`printf %s "123456" | sha256sum` and put it in `.env` (never commit `.env` or the PIN). The UI keeps the PIN in `sessionStorage` only.

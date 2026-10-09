@@ -15,6 +15,7 @@
     .statusline{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.badge{font-size:.8rem;padding:2px 8px;border-radius:999px;background:var(--blue);color:#245e8e}.badge.paid{background:var(--greenbg);color:#176645}.badge.wait{background:var(--amberbg);color:#875a0d}.badge.pending{background:#edf1f5;color:#566579}.tools{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:15px 0}.tools p{margin:0;color:var(--muted);font-size:.88rem}.button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 11px;font:inherit;color:var(--ink);cursor:pointer}.button:hover{background:#f5f8fb}.button.primary{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600;padding:9px 18px}.button.primary:hover{background:#1a4a75}.save-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:18px 0 6px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:12px}.save-status{color:var(--green);font-size:.9rem;font-weight:600;min-height:1.2em}.alert{border-left:5px solid #dea02d;background:var(--amberbg);border-radius:10px;padding:14px 16px}.alert p{margin:0}.alert strong{color:#855a0a}
     .tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{color:#4b5e73;background:#f7f9fc}.right{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.foot{color:var(--muted);font-size:.86rem;margin-top:24px}.source{font-size:.87rem;color:var(--muted);margin-top:10px}
     @media(max-width:860px){.top-grid{grid-template-columns:repeat(2,1fr)}.top-grid .card:first-child{grid-column:span 2}.milestone{grid-template-columns:62px 1fr 125px}.track{grid-column:2 / -1;grid-template-columns:1fr 130px 1fr;align-items:end}.state{grid-column:1 / -1}}@media(max-width:570px){.wrap{padding:15px 10px 38px}.hero{padding:23px 19px;border-radius:14px}.top-grid{grid-template-columns:1fr}.top-grid .card:first-child{grid-column:auto}.milestone{grid-template-columns:50px 1fr;gap:10px;padding:15px 1px}.payment{grid-column:2;text-align:left;display:flex;gap:8px;align-items:baseline}.payment strong{display:inline}.track{grid-column:2;grid-template-columns:1fr}.phase-header{align-items:flex-start;flex-direction:column;gap:2px}.progress-info{flex-direction:column;gap:2px}}
+        .pinmodal{position:fixed;inset:0;background:#10253a99;display:none;align-items:center;justify-content:center;z-index:50;padding:16px}.pinmodal.open{display:flex}.pinbox{background:#fff;border-radius:14px;padding:22px;max-width:340px;width:100%;box-shadow:0 13px 35px #12365744}.pinbox h3{margin:0 0 6px}.pinbox input{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px;font:inherit;font-size:1.1rem;letter-spacing:.2em;margin:10px 0}.pinbox .row{display:flex;gap:8px;justify-content:flex-end}.pinmsg{color:var(--red);font-size:.88rem;min-height:1.2em}.readonly-note{color:var(--muted);font-size:.88rem}.locked #saveButton,.locked #resetButton{display:none}.track input:disabled{background:#f2f5f8;cursor:not-allowed}
     @media print{body{background:#fff}.wrap{max-width:none;padding:0}.hero{border-radius:0;box-shadow:none}.track,.tools,.save-bar{display:none}.milestone{grid-template-columns:65px 1fr 125px}.statusline{display:none}}
   </style>
 </head>
@@ -46,10 +47,13 @@
       <div class="tools"><p>งวดที่ 1 และ 1.1 ถูกตั้งเป็น “ตรวจรับครบ/จ่ายแล้ว” ตามข้อมูลที่ยืนยันล่าสุด</p><button class="button" type="button" id="resetButton">รีเซ็ตข้อมูลติดตามในหน้านี้</button></div>
       <div id="milestoneList"></div>
       <div class="save-bar">
+        <button class="button" type="button" id="unlockButton">🔒 ใส่ PIN เพื่อแก้ไข / Enter PIN to edit</button>
         <button class="button primary" type="button" id="saveButton">บันทึกการเปลี่ยนแปลง</button>
         <span class="save-status" id="saveStatus" aria-live="polite"></span>
       </div>
     </section>
+
+    <div class="pinmodal" id="pinModal" role="dialog" aria-modal="true"><form class="pinbox" id="pinForm"><h3>ใส่ PIN เพื่อแก้ไข / Enter edit PIN</h3><div class="hint">ผู้ชมดูได้อย่างเดียว / Viewers are read-only</div><input id="pinInput" type="password" inputmode="numeric" autocomplete="off" maxlength="32" aria-label="PIN"><div class="pinmsg" id="pinMsg"></div><div class="row"><button class="button" type="button" id="pinCancel">ยกเลิก / Cancel</button><button class="button primary" type="submit">ตกลง / OK</button></div></form></div>
 
     <section class="section card">
       <h2>สรุปการเบิกจ่ายตามสัญญา</h2>
@@ -191,12 +195,44 @@
       updateTotals();
       setSaveStatus('ยังไม่ได้บันทึก', 'warn');
     }
+    const MSG_WRONG = 'PIN ไม่ถูกต้อง / Wrong PIN';
+    const MSG_LIMIT = 'ลองผิดเกินกำหนด รอสักครู่ / Too many wrong PINs, try later';
+    const getPin = () => sessionStorage.getItem('trackerPin');
+    function applyLock(){
+      const unlocked = !!getPin();
+      document.body.classList.toggle('locked', !unlocked);
+      document.getElementById('unlockButton').style.display = unlocked ? 'none' : '';
+      document.querySelectorAll('.track input').forEach(el => { el.disabled = !unlocked; });
+    }
+    function askPin(){
+      return new Promise(resolve => {
+        const modal = document.getElementById('pinModal'), input = document.getElementById('pinInput'), form = document.getElementById('pinForm');
+        document.getElementById('pinMsg').textContent = '';
+        input.value = ''; modal.classList.add('open'); input.focus();
+        const done = v => { modal.classList.remove('open'); form.onsubmit = null; document.getElementById('pinCancel').onclick = null; resolve(v); };
+        form.onsubmit = e => { e.preventDefault(); done(input.value.trim() || null); };
+        document.getElementById('pinCancel').onclick = () => done(null);
+      });
+    }
+    async function unlock(){
+      const pin = await askPin();
+      if (!pin) return false;
+      sessionStorage.setItem('trackerPin', pin);
+      applyLock();
+      return true;
+    }
+    document.getElementById('unlockButton').addEventListener('click', unlock);
     async function saveToServer(){
+      if (!getPin() && !(await unlock())) throw new Error('no_pin');
       const res = await fetch(API, {
         method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json', 'X-Edit-Pin': getPin()},
         body: JSON.stringify({ records })
       });
+      if (res.status === 401 || res.status === 429) {
+        if (res.status === 401) { sessionStorage.removeItem('trackerPin'); applyLock(); }
+        const err = new Error('save_failed_' + res.status); err.userMsg = res.status === 401 ? MSG_WRONG : MSG_LIMIT; throw err;
+      }
       if (!res.ok) throw new Error('save_failed_' + res.status);
       const data = await res.json();
       if (data.records) records = mergeRecords(data.records);
@@ -220,6 +256,7 @@
       document.getElementById('paymentTable').innerHTML = milestones.map(m=>`<tr><td>${m.id}</td><td>${m.pct}%</td><td class="right">${money(m.amount)}</td><td>${m.title}</td></tr>`).join('');
       document.querySelectorAll('[data-id]').forEach(el => el.addEventListener('change', onFieldChange));
       updateTotals();
+      applyLock();
     }
     function row(m){
       const r = records[m.id] || {}, done = !!r.done;
@@ -236,7 +273,7 @@
         setSaveStatus('บันทึกแล้ว', 'ok');
       } catch (err) {
         console.error(err);
-        setSaveStatus('บันทึกไม่สำเร็จ — ลองอีกครั้ง', 'error');
+        setSaveStatus(err.userMsg || (err.message === 'no_pin' ? 'ยังไม่ได้ใส่ PIN / PIN required' : 'บันทึกไม่สำเร็จ — ลองอีกครั้ง'), 'error');
       } finally {
         btn.disabled = false;
       }
@@ -253,7 +290,7 @@
         setSaveStatus('รีเซ็ตและบันทึกแล้ว', 'ok');
       } catch (err) {
         console.error(err);
-        setSaveStatus('รีเซ็ตแล้วในหน้านี้ แต่บันทึกเซิร์ฟเวอร์ไม่สำเร็จ', 'error');
+        setSaveStatus(err.userMsg || 'รีเซ็ตแล้วในหน้านี้ แต่บันทึกเซิร์ฟเวอร์ไม่สำเร็จ', 'error');
         render();
       } finally {
         btn.disabled = false;
