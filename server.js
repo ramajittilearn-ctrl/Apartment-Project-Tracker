@@ -20,11 +20,12 @@ const FAIL_WINDOW_MS = 10 * 60 * 1000;
 const failures = new Map(); // ip -> [timestamps]; in memory, cleared on restart
 
 function clientIp(req) {
+  // Trust CF-Connecting-IP only when the TCP peer is loopback (cloudflared); never X-Forwarded-For.
+  const peer = req.socket.remoteAddress || 'unknown';
+  const loop = peer === '127.0.0.1' || peer === '::1' || peer === '::ffff:127.0.0.1';
   const cf = req.headers['cf-connecting-ip'];
-  if (typeof cf === 'string' && cf) return cf.trim();
-  const xff = req.headers['x-forwarded-for'];
-  if (typeof xff === 'string' && xff) return xff.split(',')[0].trim();
-  return req.ip || 'unknown';
+  if (loop && typeof cf === 'string' && cf.trim()) return cf.trim();
+  return peer;
 }
 
 function recentFailures(ip) {
@@ -98,6 +99,25 @@ function sanitizeRecords(raw) {
   return out;
 }
 
+const IDS = new Set(['1', '1.1', ...Array.from({ length: 16 }, (_, i) => String(i + 2))]);
+// Strict write validation: known ids only, typed fields, non-empty. Returns null if invalid.
+function validateRecords(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+  const keys = Object.keys(raw);
+  if (!keys.length) return null;
+  const out = Object.create(null);
+  for (const id of keys) {
+    const r = raw[id];
+    if (!IDS.has(id) || !r || typeof r !== 'object' || Array.isArray(r)) return null;
+    const rec = {};
+    if (r.done !== undefined) { if (typeof r.done !== 'boolean') return null; rec.done = r.done; }
+    if (r.date !== undefined) { if (typeof r.date !== 'string' || (r.date && !/^\d{4}-\d{2}-\d{2}$/.test(r.date))) return null; rec.date = r.date; }
+    if (r.note !== undefined) { if (typeof r.note !== 'string' || r.note.length > 300) return null; rec.note = r.note; }
+    out[id] = rec;
+  }
+  return out;
+}
+
 async function ensureDataDir() {
   await fs.mkdir(DATA_DIR, { recursive: true });
 }
@@ -131,7 +151,6 @@ async function writeStore(store) {
 }
 
 const app = express();
-app.set('trust proxy', 'loopback'); // cloudflared connects from localhost
 app.use(express.json({ limit: '256kb' }));
 
 app.get('/api/health', (_req, res) => {
@@ -152,9 +171,14 @@ app.put('/api/milestones', requirePin, async (req, res) => {
   try {
     const body = req.body || {};
     const incoming = body.records !== undefined ? body.records : body;
-    const records = sanitizeRecords(incoming);
+    const records = validateRecords(incoming);
     if (!records) {
       res.status(400).json({ error: 'invalid_records' });
+      return;
+    }
+    const cur = await readStore();
+    if (Object.keys(cur.records).filter((id) => !(id in records)).length > 3) {
+      res.status(409).json({ error: 'too_many_removed' });
       return;
     }
     const store = {
@@ -173,7 +197,7 @@ app.get(['/', '/report.html', '/index.html'], (_req, res) => {
   res.type('html').sendFile(REPORT);
 });
 
-app.use(express.static(ROOT, { index: false, fallthrough: true }));
+app.use(express.static(path.join(ROOT, 'public'), { index: false, dotfiles: 'ignore', fallthrough: true })); // public/ only
 
 app.use((_req, res) => {
   res.status(404).type('text').send('Not found');
